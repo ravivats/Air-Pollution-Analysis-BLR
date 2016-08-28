@@ -1,0 +1,297 @@
+---
+title: 'Data Analysis on Air Pollution level in Bangalore.'
+---
+
+
+```{r}
+# Install packages, if necessary.
+library(plyr)
+library(ggplot2)
+library(ggplot)
+library(cluster)
+library(lattice)
+library(graphics)
+library(grid)
+library(gridExtra)
+library(reshape2)
+
+```
+
+
+
+```{r}
+# Downoad the datasets on your system and write in on your system's path to the datasets.
+# Reading mutliple datasets for considerable amount of data.
+
+data1 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_12.csv", header=T,sep=",")
+data2 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_13.csv", header=T,sep=",")
+data3 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_14.csv", header=T,sep=",")
+data4 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_15.csv", header=T,sep=",")
+data5 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_16.csv", header=T,sep=",")
+data6 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_17.csv", header=T,sep=",")
+data7 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_18.csv", header=T,sep=",")
+data8 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_19.csv", header=T,sep=",")
+data9 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_20.csv", header=T,sep=",")
+data10 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_21.csv", header=T,sep=",")
+data11 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_22.csv", header=T,sep=",")
+data12 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_23.csv", header=T,sep=",")
+data13 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_24.csv", header=T,sep=",")
+data14 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_25.csv", header=T,sep=",")
+data15 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_26.csv", header=T,sep=",")
+data16 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_27.csv", header=T,sep=",")
+data17 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_28.csv", header=T,sep=",")
+data18 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_29.csv", header=T,sep=",")
+data19 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_30.csv", header=T,sep=",")
+data20 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_31.csv", header=T,sep=",")
+
+
+```
+
+
+```{r}
+# Combining all the data frames into one big data frame for data analysis operations.
+
+total<-rbind(data1,data2,data3,data4,data5,data6,data7,data8,data9,data10)
+total<-rbind(total,data11,data12,data13,data14,data15,data16,data17,data18,data19,data20)
+
+# Filtering data i.e. removing column ts_Unix as it is not required.
+
+total$tsUnix<-NULL
+
+# Printing the resultant data frame. 
+
+print(total)
+
+```
+
+
+```{r}
+# Make all graphs with idnum at x-axis and all other pollutants at y-axis.
+
+test_data_long <- melt(total, id="id")  
+
+# convert to long format
+
+ggplot(data=test_data_long,
+       aes(x=id, y=value, colour=variable)) +
+       geom_line()
+```
+
+
+```{r}
+# Doing linear regression plot of Co2 vs. idnum
+
+fit<-lm(CO2~id,total)
+total$CO2
+fitted(fit)
+residuals(fit)
+
+plot(total$id,total$CO2, xlab="Id", ylab="Concentration of CO2")
+abline(fit)
+summary(fit)
+```
+
+
+```{r}
+# Doing linear regression plot of CO vs. idnum
+
+fit_CO<-lm(CO~id,total)
+total$CO
+fitted(fit_CO)
+residuals(fit_CO)
+
+plot(total$id,total$CO, xlab="Id", ylab="Concentration of CO")
+abline(fit_CO)
+summary(fit_CO)
+
+```
+
+```{r}
+# Doing linear regression plot of NH3 vs. idnum
+fit_NH3<-lm(NH3~id,total)
+total$NH3
+fitted(fit_NH3)
+residuals(fit_NH3)
+
+plot(total$id,total$NH3, xlab="Id", ylab="Concentration of NH3")
+abline(fit_NH3)
+summary(fit_NH3)
+
+```
+
+```{r}
+# Doing linear regression plot of AN vs. idnum
+fit_AN<-lm(AN~id,total)
+total$AN
+fitted(fit_AN)
+residuals(fit_AN)
+
+plot(total$id,total$AN, xlab="Id", ylab="Concentration of AN")
+abline(fit_AN)
+summary(fit_AN)
+
+```
+
+```{r}
+# Doing polynomial regression plot to improve prediction for concentration of CO2.
+# Similarily, polynomial regression can too be performed for other pollutants like AN, CO, NH3   etc.
+# This (polynomial regression of degree 2) is the best prediction, to confirm please check higgher   degrees like 3,4,5 etc.
+
+fit2 <- lm(CO2 ~ id + I(id^2), data=total)
+plot(total$id,total$CO2,xlab="Id ",ylab="CO2 level")
+
+lines(total$id,fitted(fit2))
+
+summary(fit2)
+
+```
+
+# Prediction of  concentration of CO2 using any one value of idnum using different intervals.
+```{r}
+predict(fit, newdata=data.frame(id=1472029))
+```
+
+```{r}
+predict(fit2, newdata=data.frame(id=1472029))
+```
+
+```{r}
+predict(fit, newdata=data.frame(id=1472029), interval="pred")
+```
+```{r}
+predict(fit2, newdata=data.frame(id=1472029), interval="pred")
+```
+```{r}
+predict(fit, newdata=data.frame(id=1472029), interval="confidence")
+```
+```{r}
+predict(fit2, newdata=data.frame(id=1472029), interval="confidence")
+```
+
+
+# Range prediction based on idnum values:
+```{r}
+# Downoad the datasets on your system and write in on your system's path to the datasets.
+# Read the data into a table from the file.
+
+sample<-read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/datasetPredictability.csv", header=T,sep=",")
+traindata <- as.data.frame(sample[1:325,])
+testdata <- as.data.frame(sample[326,])
+traindata
+```
+
+```{r}
+# Prediction of values of NH3 levels for a  range of idnum values
+
+fit2 <- lm(NH3~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=NH3)) +geom_line() +geom_point()+geom_hline(aes(yintercept=12))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$NH3 <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 +geom_point(color="red", data=pred)
+print(p2)
+
+```
+
+```{r}
+# Prediction of values of CO2 levels for a  range of idnum values
+fit2 <- lm(CO2 ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=CO2)) +
+  geom_line() +
+  geom_point()+  geom_hline(aes(yintercept=0))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$CO2 <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p3<-p1 + geom_point(color="red", data=pred)
+print(p3)
+```
+
+```{r}
+# Prediction of values of CO levels for a  range of idnum values
+fit2 <- lm(CO ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=CO)) + geom_line() + geom_point()+  geom_hline(aes(yintercept=150))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=325:450)
+pred$CO <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 + geom_point(color="red", data=pred)
+print(p2)
+```
+
+```{r}
+# Prediction of concentration values of pmx for a range of idnum values
+# pmx = Particulate Matter X 
+fit2 <- lm(pmx ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=pmx)) +
+  geom_line() +
+  geom_point()+  geom_hline(aes(yintercept=0))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$pmx <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 +
+  geom_point(color="red", data=pred)
+print(p2)
+```
+
+```{r}
+# Prediction of concentration values of pmy for a range of idnum values
+# pmy = Particulate Matter Y
+fit2 <- lm(pmy ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=pmy)) +
+  geom_line() +
+  geom_point()+  geom_hline(aes(yintercept=0))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$pmy <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 +
+  geom_point(color="red", data=pred)
+print(p2)
+```
+
+```{r}
+# Prediction of concentration values of X_rssi for a range of idnum values
+# X_rssi = Residual Soil Stability Index.
+
+fit2 <- lm(X__rssi ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=X__rssi)) +
+  geom_line() +
+  geom_point()+  geom_hline(aes(yintercept=0))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$X__rssi <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 +
+  geom_point(color="red", data=pred)
+print(p2)
+
+```
+
+```{r}
+# Prediction of concentration values of AN for a range of idnum values
+fit2 <- lm(AN ~ idnum + I(idnum^2), data=traindata)
+p1 <- ggplot(traindata, aes(x = idnum, y=AN)) + geom_line() + geom_point() +geom_hline(aes(yintercept=0))
+print(p1)
+summary(fit2)
+pred <- data.frame(idnum=300:400)
+pred$AN <- predict(fit2, newdata=pred)
+predict(fit2, newdata=pred, interval="pred")
+predict(fit2, newdata=pred, interval="confidence")
+p2<-p1 + geom_point(color="red", data=pred)
+print(p2)
+```

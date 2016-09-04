@@ -20,7 +20,7 @@ library(reshape2)
 
 
 ```{r}
-# Downoad the datasets on your system and write in on your system's path to the datasets.
+# Download the datasets on your system and write in on your system's path to the datasets.
 # Reading mutliple datasets for considerable amount of data.
 
 data1 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_12.csv", header=T,sep=",")

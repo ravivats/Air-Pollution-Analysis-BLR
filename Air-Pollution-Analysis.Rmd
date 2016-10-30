@@ -7,7 +7,6 @@ title: 'Data Analysis on Air Pollution level in Bangalore.'
 # Install packages, if necessary.
 library(plyr)
 library(ggplot2)
-library(ggplot)
 library(cluster)
 library(lattice)
 library(graphics)
@@ -22,29 +21,27 @@ library(reshape2)
 ```{r}
 # Download the datasets on your system and write in on your system's path to the datasets.
 # Reading mutliple datasets for considerable amount of data.
-
-data1 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_12.csv", header=T,sep=",")
-data2 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_13.csv", header=T,sep=",")
-data3 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_14.csv", header=T,sep=",")
-data4 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_15.csv", header=T,sep=",")
-data5 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_16.csv", header=T,sep=",")
-data6 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_17.csv", header=T,sep=",")
-data7 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_18.csv", header=T,sep=",")
-data8 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_19.csv", header=T,sep=",")
-data9 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_20.csv", header=T,sep=",")
-data10 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_21.csv", header=T,sep=",")
-data11 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_22.csv", header=T,sep=",")
-data12 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_23.csv", header=T,sep=",")
-data13 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_24.csv", header=T,sep=",")
-data14 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_25.csv", header=T,sep=",")
-data15 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_26.csv", header=T,sep=",")
-data16 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_27.csv", header=T,sep=",")
-data17 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_28.csv", header=T,sep=",")
-data18 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_29.csv", header=T,sep=",")
-data19 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_30.csv", header=T,sep=",")
-data20 <- read.table("D:/Data Science/Air-Pollution-Analysis-BLR/datasets/data_31.csv", header=T,sep=",")
-
-
+setwd("D:/Data Science/Air-Pollution-Analysis-BLR/datasets")
+data1 <- read.table("data_12.csv", header=T,sep=",")
+data2 <- read.table("data_13.csv", header=T,sep=",")
+data3 <- read.table("data_14.csv", header=T,sep=",")
+data4 <- read.table("data_15.csv", header=T,sep=",")
+data5 <- read.table("data_16.csv", header=T,sep=",")
+data6 <- read.table("data_17.csv", header=T,sep=",")
+data7 <- read.table("data_18.csv", header=T,sep=",")
+data8 <- read.table("data_19.csv", header=T,sep=",")
+data9 <- read.table("data_20.csv", header=T,sep=",")
+data10 <- read.table("data_21.csv", header=T,sep=",")
+data11 <- read.table("data_22.csv", header=T,sep=",")
+data12 <- read.table("data_23.csv", header=T,sep=",")
+data13 <- read.table("data_24.csv", header=T,sep=",")
+data14 <- read.table("data_25.csv", header=T,sep=",")
+data15 <- read.table("data_26.csv", header=T,sep=",")
+data16 <- read.table("data_27.csv", header=T,sep=",")
+data17 <- read.table("data_28.csv", header=T,sep=",")
+data18 <- read.table("data_29.csv", header=T,sep=",")
+data19 <- read.table("data_30.csv", header=T,sep=",")
+data20 <- read.table("data_31.csv", header=T,sep=",")
 ```
 
 
